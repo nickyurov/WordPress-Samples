@@ -9,9 +9,9 @@ $password = '123';
 wp_set_password( $password, $user_id );
 
 // Option 2 - create new user with administrator privileges
-$userdata = array(
+$user_data = array(
 	'user_login' => 'dev-admin',
 	'role'       => 'administrator',
 	'user_pass'  => '123',
 );
-$user_id = wp_insert_user( $userdata );
+$user_id = wp_insert_user( $user_data );
