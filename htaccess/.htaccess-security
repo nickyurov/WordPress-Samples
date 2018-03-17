@@ -1,0 +1,72 @@
+#WP HTACCESS SECURITY TWEAKS
+
+Options -Indexes
+
+ServerSignature Off
+
+<Files license.txt>
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files readme.html>
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files .htaccess>
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files wp-config.php>
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files wp-config-sample.php>
+    Order deny,allow
+    Deny from all
+</Files>
+
+#OPTIONAL
+<Files xmlrpc.php>
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files *.log>
+    Order deny,allow
+    Deny from all
+</Files>
+
+#DISABLE AUTHOR SCAN
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{QUERY_STRING} (author=\d+) [NC]
+    RewriteRule .* - [F]
+</IfModule>
+
+#DISABLE TRACE/TRACK
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+    RewriteRule .* - [F]
+</IfModule>
+
+#DISABLE PROXY COMMENTS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^POST
+    RewriteCond %{HTTP:VIA} !^$ [OR]
+    RewriteCond %{HTTP:FORWARDED} !^$ [OR]
+    RewriteCond %{HTTP:USERAGENT_VIA} !^$ [OR]
+    RewriteCond %{HTTP:X_FORWARDED_FOR} !^$ [OR]
+    RewriteCond %{HTTP:X_FORWARDED_HOST} !^$ [OR]
+    RewriteCond %{HTTP:PROXY_CONNECTION} !^$ [OR]
+    RewriteCond %{HTTP:XPROXY_CONNECTION} !^$ [OR]
+    RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+    RewriteCond %{HTTP:HTTP_CLIENT_IP} !^$
+    RewriteRule wp-comments-post\.php - [F]
+</IfModule>
